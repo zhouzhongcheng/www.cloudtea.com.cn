@@ -1,0 +1,102 @@
+<?php
+$name = $_GET['userName'];  
+$pass=$_GET['pass'];
+$newAccountType=$_GET['newAccountType'];
+//echo $newAccountType;
+
+$con=mysql_connect("localhost","zzc","zhouzhongcheng&11414");//,"stock_alarm");
+
+
+// Check connection
+if (mysqli_connect_errno())
+{
+ 	 echo "failed to connect to MySQL: " . mysqli_connect_error();
+}
+else 
+{
+	//echo "i con ok ";
+
+	$db_found = mysql_select_db("stock_alarm", $con);
+
+	if ($db_found) {
+		//echo "found database";
+		$SQL = "SELECT  discount_times,account_value,account_type,expire_time from user where user_name='".$name."' and pass='".$pass."'";
+		//echo $SQL;
+		$result = mysql_query($SQL);
+		$time_expire_str=null;
+		$oldAccountType=-2;
+		$accountValue=0;
+		//$time_expire=null;
+		while ( $row = mysql_fetch_array($result) ) {
+			$time_expire_str=$row['expire_time'];
+			$oldAccountType=$row['account_type'];
+			$accountValue=$row['account_value'];
+			$discount_times=$row['discount_times'];
+		}
+
+		if($accountValue>0 && $oldAccountType>0 && $newAccountType>0 && $newAccountType<4) {
+			$accountTypeArray=array(1,2,5); //echo $oldAccountType; 
+			$Date_1=$time_expire_str;//"2007-06-27";
+
+			$Date_2=date('Y-m-d H:i:s',time());//"2013-10-12 09:12:23";
+//echo $Date_2;
+			/* 首先用explode这个函数来拆分字符串 explode("这引号里面是条件来的哦，改成:就会用:来拆分字符串的,可以应用到很多方面去的",后面要拆分的字符串) */
+
+			$Date_explode_1=explode("-",$Date_1); $Date_explode_2=explode("-",$Date_2);
+
+			/* 拆分后的字符串，我们通过使用mktime函数来计算时间， 必须说明一下的是mktime计算出来的时间是用秒来算的哦， 后面就简单啦,具体可以看手册，里面详细得很 */
+
+			$Day_1=mktime(0,0,0,$Date_explode_1[1],$Date_explode_1[2],$Date_explode_1[0]); $Day_2=mktime(0,0,0,$Date_explode_2[1],$Date_explode_2[2],$Date_explode_2[0]);
+
+			$Days=round(($Day_1-$Day_2)/3600/24);
+
+			$newDays=round(($Days*$accountTypeArray[$oldAccountType-1])/$accountTypeArray[$newAccountType-1]); 
+
+
+
+			 $a=date('Y-m-d H:i:s',time());
+
+				// 第二步，获得这个日期的时间戳 
+			$a_time = strtotime($a); 
+	 
+			// 第三步，获得加五个月后的时间戳 
+			$b_time = strtotime('+'.$newDays.' Day',$a_time); 
+
+			$b = date('Y-m-d H:i:s',$b_time); 
+
+
+			$sqlUpdate="update user set expire_time='".$b."' , account_type=".$newAccountType."  where  user_name='".$name."' and pass='".$pass."'";
+			
+			$updateResult=mysql_query($sqlUpdate);
+			
+			if($updateResult)
+				echo "ok";
+			else
+				echo "fail to update";
+		}
+		else 
+			echo "ok:account type not >0";
+
+		
+		
+	}
+	else {
+		echo "fail:Database not found da";
+		
+		
+
+	}
+
+
+
+
+
+	
+
+	}
+
+	mysql_close($con);
+
+
+
+?>

@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>看盘精灵</title>
+<style type="text/css">
+<!--
+body {
+	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
+	background: #42413C;
+	margin: 0;
+	padding: 0;
+	color: #000;
+}
+
+/* ~~ Element/tag selectors ~~ */
+ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
+	padding: 0;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin-top: 0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+	padding-right: 15px;
+	padding-left: 15px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+}
+a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+	border: none;
+}
+
+/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
+a:link {
+	color: #42413C;
+	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+}
+a:visited {
+	color: #6E6C64;
+	text-decoration: underline;
+}
+a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+	text-decoration: none;
+}
+
+/* ~~this fixed width container surrounds the other divs~~ */
+.container {
+	width: 960px;
+	background: #FFF;
+	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
+}
+
+/* ~~ the header is not given a width. It will extend the full width of your layout. It contains an image placeholder that should be replaced with your own linked logo ~~ */
+.header {
+	background: #ADB96E;
+}
+
+/* ~~ These are the columns for the layout. ~~ 
+
+1) Padding is only placed on the top and/or bottom of the divs. The elements within these divs have padding on their sides. This saves you from any "box model math". Keep in mind, if you add any side padding or border to the div itself, it will be added to the width you define to create the *total* width. You may also choose to remove the padding on the element in the div and place a second div within it with no width and the padding necessary for your design. You may also choose to remove the padding on the element in the div and place a second div within it with no width and the padding necessary for your design.
+
+2) No margin has been given to the columns since they are all floated. If you must add margin, avoid placing it on the side you're floating toward (for example: a right margin on a div set to float right). Many times, padding can be used instead. For divs where this rule must be broken, you should add a "display:inline" declaration to the div's rule to tame a bug where some versions of Internet Explorer double the margin.
+
+3) Since classes can be used multiple times in a document (and an element can also have multiple classes applied), the columns have been assigned class names instead of IDs. For example, two sidebar divs could be stacked if necessary. These can very easily be changed to IDs if that's your preference, as long as you'll only be using them once per document.
+
+4) If you prefer your nav on the right instead of the left, simply float these columns the opposite direction (all right instead of all left) and they'll render in reverse order. There's no need to move the divs around in the HTML source.
+
+*/
+.sidebar1 {
+	float: left;
+	width: 180px;
+	background: #EADCAE;
+	padding-bottom: 10px;
+}
+.content {
+
+	padding: 10px 0;
+	width: 780px;
+	float: left;
+}
+
+/* ~~ This grouped selector gives the lists in the .content area space ~~ */
+.content ul, .content ol { 
+	padding: 0 15px 15px 40px; /* this padding mirrors the right padding in the headings and paragraph rule above. Padding was placed on the bottom for space between other elements on the lists and on the left to create the indention. These may be adjusted as you wish. */
+}
+
+/* ~~ The navigation list styles (can be removed if you choose to use a premade flyout menu like Spry) ~~ */
+ul.nav {
+	list-style: none; /* this removes the list marker */
+	border-top: 1px solid #666; /* this creates the top border for the links - all others are placed using a bottom border on the LI */
+	margin-bottom: 15px; /* this creates the space between the navigation on the content below */
+}
+ul.nav li {
+	border-bottom: 1px solid #666; /* this creates the button separation */
+}
+ul.nav a, ul.nav a:visited { /* grouping these selectors makes sure that your links retain their button look even after being visited */
+	padding: 5px 5px 5px 15px;
+	display: block; /* this gives the link block properties causing it to fill the whole LI containing it. This causes the entire area to react to a mouse click. */
+	width: 160px;  /*this width makes the entire button clickable for IE6. If you don't need to support IE6, it can be removed. Calculate the proper width by subtracting the padding on this link from the width of your sidebar container. */
+	text-decoration: none;
+	background: #C6D580;
+}
+ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background and text color for both mouse and keyboard navigators */
+	background: #ADB96E;
+	color: #FFF;
+}
+
+/* ~~ The footer ~~ */
+.footer {
+	padding: 10px 0;
+	background: #CCC49F;
+	position: relative;/* this gives IE6 hasLayout to properly clear */
+	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
+}
+
+/* ~~ miscellaneous float/clear classes ~~ */
+.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the #footer is removed or taken out of the #container */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+.container .sidebar1 p {
+	color: #490096;
+}
+.red {
+	color: #FF003E;
+}
+-->
+</style></head>
+
+<body>
+
+<div class="container">
+  <div class="header"><!-- end .header -->
+    <h2><a href="#"></a>    <img src="images/logo-ok2-72.png" width="66" height="60" />                     看 盘 精 灵                        <img src="../images/logo.png" width="60" /></h2>
+  </div>
+  <div class="sidebar1">
+    <ul class="nav">
+     
+      <li><a href="help.aspx">帮助及规则</a><a href="phpBB3/"></a><a href="#"></a></li>
+      <li><a href="bbs">问题提交</a><a href="#"></a></li>
+    
+      <li><a href="help/help-license.html">版权声明</a><a href="#"></a></li>
+    </ul>
+    <p><a href="down/StockAlarm.apk">下载</a></p>
+  <!-- end .sidebar1 --></div>
+  <div class="content">
+    
+<p>   <br />
+  <img src="images/320-569/Screenshot1.png" width="209" height="328"  align="Left" />所属类别：财经(股票、期货)<br />
+  更新时间：2013年10月1日<br />
+  程序大小：2.1MB                               <strong><a href="down/chengyuJL.apk"><br />
+  </a></strong>系统要求：android 2.1以上  <br />
+  分  辨  率：240*320等  <br />
+    运行权限：1，允许程序访问网络；   <br />
+  版本： 1.0                                         <a href="#download">下载</a></p>
+<p><strong>内容介绍</strong>：</p>
+<p>	      <strong>这是不用盯盘的盯盘软件。</strong></p>
+<p>是把你从电脑看盘软件中解放出来的手机股票、期货（含股指期货）看盘预警软件。你再也不用时刻盯着电脑屏幕，不用担心你的自选股的异动，因为疏忽没有被留意。看盘精灵具有非常完备而强大的预警设置功能，每只股票可以设置5-10个预警项目，组成严密的预警组合。看盘精灵具有独创的阶梯预警功能，一键设定，股票涨跌尽在掌握。</p>
+<p>       你在炒股过程中是否会产生没来由的焦躁吗？不盯着电脑屏幕就会产生对于大盘以及个股涨跌的焦虑吗？你觉得盯盘太累吗？你觉得电脑端的股票预警实用吗，电脑端的股票软件包括股票预警，只能把人限制在电脑前，对于职业股民是个令人不快的限制，对于上班族股民而言更是无法使用，而手机的可移动性给我们带来了巨大的方便。</p>
+<p>       作为手机股票预警软件，只要你拥有一台手机，就可以把你从盯盘的重负中解脱出来,你再也不用时刻盯着电脑屏幕，不用担心你的自选股的异动没有被留意，任何股票价格、涨跌的异动都会根据你的设置自动提醒您，当然，你不需要被拘禁在电脑边，你可以到任何地方走走，不用时刻焦虑着自己的股票是否忽然急拉或急跌。</p>
+<p>       如果你是上班族，你根本没有盯盘的条件，现在只要一台手机就可以了，你不用不断地拿出手机查看股票价格，而是股票到达你设定的价格或涨跌幅的时候自动通知你。更加方便的是你完全可以在股票到达预警条件时设置振动（铃声为静音），不用担心老板或同事的关注。</p>
+<p>       看盘精灵软件具有非常完备而强大的预警设置功能，每只股票可以设置5-10个预警项目，组成严密的预警组合。看盘精灵具有独创的阶梯预警功能，一键设定，股票涨跌尽在掌握。看盘精灵软件的时间精确性、提醒及时性甚至超过专业交易软件。是你炒股的必备助手。</p>
+<p>    本软件目前只支持android平台。当前版本为v1.0</p>
+<p>。</p>
+<p><strong>程序下载：<a name="download" id="download"></a>   </strong>
+<p align="center"><strong> </strong><strong> <a href="http://www.mumayi.com/android-406912.html"> </a></strong><strong>   </strong><strong> </strong><strong> </strong><strong><a href="down/stockAlarm.apk">本地下载</a></strong>
+  <br />
+  <p align="center"><br />
+</p>
+<hr />
+<h3 align="center"><a href="/cywg/phpBB3/viewforum.php?f=8"> </a><img src="images/320-569/Screenshot8.png" width="193" height="303" /><strong>&nbsp;</strong><img src="images/320-569/Screenshot4.png" width="202" height="305" /></h3>
+<p align="center"><img src="images/320-569/Screenshot5.png" width="204" height="291" /><strong>&nbsp;</strong><img src="images/320-569/Screenshot6.png" width="207" height="294" /></p>
+<p align="center"><img src="images/320-569/Screenshot7.png" width="205" height="298" /><strong>&nbsp;</strong><img src="images/320-569/Screenshot2.png" width="201" height="300" /></p>
+<p align="center"><img src="images/320-569/Screenshot9.png" width="240" height="371" /></p>
+<br />
+<p>&nbsp;</p>
+  <!-- end .content --></div>
+  <div class="footer">
+    <p align="center">Copyright © 2012 苏州云行信息科技有限公司 版权所有   <a href="http://www.miibeian.gov.cn/">苏ICP备13046009号-1</a></p>
+    <!-- end .footer --></div>
+  <!-- end .container --></div>
+</body>
+</html>
