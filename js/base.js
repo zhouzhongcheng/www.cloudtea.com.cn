@@ -15,7 +15,7 @@ CalcMeasure();
 function onePager(offsetMain, offsetIntro) {
     $('#nav').onePageNav({
         currentClass: "active",
-        scrollOffset: offsetMain,
+        scrollOffset: offsetMain
     });
     $("scroll-down button").click(function () {
         $('html, body').animate({
